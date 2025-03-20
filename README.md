@@ -145,10 +145,10 @@ type TModalContacts = Pick<IOrderForm, 'email' | 'tell'>;
 В полях класса хранятся следующие данные:
 - _cards: ICard[] - массив обьектов карточек;
 - _preview: string | null - id карточки, выбранной для просмотра в модальном окне;
-- getCard(cardId: string): ICard - возвращает карточку по ее id;
 - events: IEvents - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными:
+- getCard(cardId: string): ICard - возвращает карточку по ее id;
 - сеттеры и геттеры для сохранения и получения данных из полей класса
 
 #### Класс OrderData
@@ -162,10 +162,26 @@ type TModalContacts = Pick<IOrderForm, 'email' | 'tell'>;
 - events: IEvents - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными:
-- setUserInfo(orderDataPay: TModalPay): void - сохраняет данные о адресе доставки и способе оплаты в классе;
+- setUserInfoPay(orderDataPay: TModalPay): void - сохраняет данные о адресе доставки и способе оплаты в классе;
 - checkFormPayValidation(data: Record<keyof TModalPay, string>): boolean - проверяет объект с данными для оплаты на валидность;
-- setUserInfo(orderDataContacts: TModalContacts): void - сохраняет данные контактов заказчика в классе;
-- checkFormContactsValidation(data: Record<keyof TModalContacts, string>): boolean - проверяет объект с данными заказчика на валидность
+- setUserInfoContact(orderDataContacts: TModalContacts): void - сохраняет данные контактов заказчика в классе;
+- checkFormContactsValidation(data: Record<keyof TModalContacts, string>): boolean - проверяет объект с данными заказчика на валидность;
+- getUserInfo(orderDataPay: TModalPay, orderDataContacts: TModalContacts): void - возвращает данные о заказе.
+
+#### Класс BasketState
+
+Класс отвечает за хранение и логику работы с данными корзины.\
+Конструктор класса принимает инстант брокера событий.\
+В полях класса хранятся следующие данные:
+- basket: ICard[] - список объектов карточек в корзине;
+- id: string | null - id карточки;
+- events: IEvents - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
+
+Методы класса:
+- getCardBasket(card: ICard): void - добавляет одну карточку в начало cgbcrf и вызывает событие изменения массива;
+- deleteCardBasket(cardId: string, payload: Function | null = null): void - удаляет карточку из списка. Если передан колбэк, то выполняет его после удаления, если нет, то вызывает событие изменения массива;
+- сеттеры и геттеры для сохранения и получения данных из полей класса.
+
 
 ### Классы представления
 Все классы представления отвечают за отображение внутри контейнера (DOM-элемента) передаваемых в них данных.
