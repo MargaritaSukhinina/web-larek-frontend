@@ -52,7 +52,7 @@ interface ICard  {
     category: string;
     description: string;
     image: string;
-    prise: string | null;
+    price: string | null;
 }
 ```
 
@@ -82,21 +82,21 @@ interface ICardtData {
 
 ```
 
-type TCardMain = Pick<ICard, 'name' | 'category' | 'image' | 'prise'>;
+type TCardMain = Pick<ICard, 'name' | 'category' | 'image' | 'price'>;
 ```
 
 Данные карточки, используемые для модального окна карточки
 
 ```
 
-type TCardModal = Pick<ICard, 'name' | 'category' | 'image' | 'description' | 'prise'>;
+type TCardModal = Pick<ICard, 'name' | 'category' | 'image' | 'description' | 'price'>;
 ```
 
 Данные карточки, используемые для отображения списка товаров в корзине
 
 ```
 
-type TBasketItem = Pick<ICard, 'name'| 'prise'>;
+type TBasketItem = Pick<ICard, 'name'| 'price'>;
 ```
 
 Данные, используемые для модального окна формы оплаты
@@ -216,7 +216,8 @@ type TModalContacts = Pick<IOrderForm, 'email' | 'tell'>;
 Поля класса:
 - _submit: HTMLButtonElement - Кнопка подтверждения
 - _form: HTMLFormElement - элемент формы
-- formName: string - значение атрибута name формы
+- formName: string - значение атрибута name формы;
+- _handleSubmit: Function - функция, на выполнение которой запрашивается подтверждение;
 - inputs: NodeListOf<HTMLInputElement> - коллекция всех полей ввода формы
 - errors: Record<string, HTMLElement> - объект хранящий все элементы для вывода ошибок под полями формы с привязкой к атрибуту name инпутов.
 
@@ -236,9 +237,9 @@ type TModalContacts = Pick<IOrderForm, 'email' | 'tell'>;
 Поля класса содержат элементы разметки элементов карточки:
 - _title: HTMLElement;
 - _image?: HTMLImageElement;
-- _category?: HTMLImageElement;
+- _category?: HTMLElement;
 - _description?: HTMLElement;
-- _prise: HTMLElement;
+- _price: HTMLElement;
 - _button?: HTMLButtonElement;
  Конструктор, кроме темплейта принимает экземпляр `EventEmitter` для инициации событий.\
 Методы:
@@ -265,13 +266,14 @@ type TModalContacts = Pick<IOrderForm, 'email' | 'tell'>;
 
 *События, возникающие при взаимодействии пользователя с интерфейсом (генерируются классами, отвечающими за представление)*
 - `card:select` - выбор карточки для отображения в модальном окне;
+- `card:open` - открытие модального окна карточки;
 - `cardBasket:delete` - удаление товара из списка товаров в корзине;
 - `basket:open` - открытие модального окна корзины;
 - `payFill:open` - открытие модального окна заполнения формы оплаты и адреса доставки;
 - `olderFill:open` - открытие модального окна с формой редактирования данных пользователя для заказа;
 - `fill-pay:input` - ввод данных в форме с выбором способа оплаты и адреса доставки;
 - `fill-order:input` - ввод данных в форме информации о заказе;
-- `add-basket:submit` - добавление товара в корзину в модальном окне карточки;
+- `'add-card:submit` - добавление товара в корзину в модальном окне карточки;
 - `buy-basket:submit` - переход к оформлению заказа;
 - `fill-pay:submit` - сохранение данных оплаты в модальном окне;
 - `fill-order:submit` - сохранение данных заказа в модальном окне;
