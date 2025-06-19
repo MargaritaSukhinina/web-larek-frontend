@@ -7,51 +7,64 @@ export interface IProduct  {
     price: number | null;
 }
 
-export interface ICardData {
-    cards: IProduct[];
-    preview: string | null;
-    getCard(cardId: string): IProduct;
-    //addCard(card: IProduct): void;
-    deleteCard(cardId: string, payload: Function | null): void;
+export interface IProductList {
+    items: IProduct[];
 }
+
+export type TProductId = Pick<IProduct, 'id'>;
+
+export type Pay = 'Онлайн' | 'При получении';
 
 export interface IOrderForm {
-    pay: 'Онлайн' | 'При получении';
+    payment: Pay;
     address: string;
     email: string;
-    tell:  string;
+    phone:  string;
 }
 
-export interface IOrder extends IOrderForm {
+export interface IOrderList {
+    total: number;
     items: string[];
 }
 
-export interface IOrderDataPay {
-	setUserInfo(orderDataPay: TModalPay): void;
-	checkFormPayValidation(data: Record<keyof TModalPay, string>): boolean;
+export interface IAddress {
+    payment: Pay;
+    address: string;
 }
 
-export interface IOrderDataContacts {
-	setUserInfo(orderDataContacts: TModalContacts): void;
-	checkFormContactsValidation(data: Record<keyof TModalContacts, string>): boolean;
+export interface IContacts {
+    email: string;
+    phone:  string;
+}
+
+export type TOrderData = IAddress & IContacts & IOrderList;
+
+export interface IOrder extends TOrderData {
+    readyOrder(): TOrderData;
+}
+
+export interface IOrderBailder {
+    addressUser: IAddress;
+    contactsUser: IContacts;
+    orderList: IOrderList;
+    result: TOrderData;
+}
+
+export interface IFormValid {
+    valid: boolean;
+}
+
+export interface IForm extends IFormValid {
+    render(data?: IFormValid): HTMLElement;
 }
 
 export type TCardMain = Pick<IProduct, 'title' | 'category' | 'image' | 'price'>;
-export type TCardModal = Pick<IProduct, 'title' | 'category' | 'image' | 'description' | 'price'>;
-export type TBasketItem = Pick<IProduct, 'title' | 'price'>;
-export type TModalPay = Pick<IOrderForm, 'pay' | 'address'>;
-export type TModalContacts = Pick<IOrderForm, 'email' | 'tell'>;
+export type TCardModal = Pick<IProduct, 'id' | 'title' | 'category' | 'image' | 'description' | 'price'>;
+export type TBasketItem = Pick<IProduct, 'id' | 'title' | 'price'>;
+export type TModalPay = Pick<IOrderForm, 'payment' | 'address'>;
+export type TModalContacts = Pick<IOrderForm, 'email' | 'phone'>;
 
 export interface IOrderResult {
+    total: number;
     id: string;
 }
-
-export interface IAppState {
-    catalog: IProduct[];
-    basket: string[];
-    preview: string | null;
-    order: IOrder | null;
-    loading: boolean;
-}
-
-export type FormErrors = Partial<Record<keyof IOrder, string>>;

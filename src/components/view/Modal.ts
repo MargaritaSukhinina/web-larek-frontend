@@ -1,6 +1,6 @@
-import {Component} from "../base/component";
-import {IEvents} from "../base/events";
-import {ensureElement} from "../../utils/utils";
+import { Component } from "./component";
+import { IEvents } from "../base/events";
+import { ensureElement } from "../../utils/utils";
 
 export interface IModalView {
     content: HTMLElement;
@@ -9,12 +9,14 @@ export interface IModalView {
 export class Modal extends Component<IModalView> {
     protected _closeButton: HTMLButtonElement;
     protected _content: HTMLElement;
+    protected events: IEvents;
 
-    constructor(container: HTMLElement, protected events: IEvents) {
+    constructor(container: HTMLElement, events: IEvents) {
         super(container);
 
         this._closeButton = ensureElement<HTMLButtonElement>('.modal__close', container);
         this._content = ensureElement<HTMLElement>('.modal__content', container);
+        this.events = events;
 
         this._closeButton.addEventListener('click', this.close.bind(this));
         this.container.addEventListener('click', this.close.bind(this));
@@ -26,19 +28,22 @@ export class Modal extends Component<IModalView> {
     }
 
     open() {
-        this.container.classList.add('modal_active');
+        this.toggleClass(this.container, 'modal_active', true);
         this.events.emit('modal:open');
     }
 
     close() {
-        this.container.classList.remove('modal_active');
-        this.content = null;
+        this.toggleClass(this.container, 'modal_active', false);
         this.events.emit('modal:close');
     }
 
-    render(data: IModalView): HTMLElement {
-        super.render(data);
-        this.open();
-        return this.container;
-    }
+    // render(data: IModalView): HTMLElement {
+    //     super.render(data);
+    //     this.open();
+    //     return this.container;
+    // }
+
+    // disabled() {
+    //     this.setDisabled(this.container, true)
+    // }
 }

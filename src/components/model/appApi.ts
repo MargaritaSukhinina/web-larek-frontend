@@ -1,7 +1,5 @@
-import { Api, ApiListResponse } from './base/api';
-import {IProduct, ICardData, IOrder, IOrderResult, IAppState, FormErrors} from "../types/index";
-import {Model} from "./base/model";
-import { Card } from './card';
+import { Api, ApiListResponse } from "../base/api";
+import { IProduct, IOrder, IOrderResult, TOrderData } from "../../types";
 
 export interface ICardApi {
     getCards: () => Promise<IProduct[]>;
@@ -36,7 +34,7 @@ export class AppApi extends Api implements ICardApi {
         );
     }
 
-    orderCards(order: IOrder): Promise<IOrderResult> {
+    orderCards(order: TOrderData): Promise<IOrderResult> {
         return this.post('/order', order).then(
             (data: IOrderResult) => data
         );

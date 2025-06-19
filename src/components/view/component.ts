@@ -37,6 +37,7 @@ export abstract class Component<T> {
 
     // Переключить класс
     toggleClass(element: HTMLElement, className: string, force?: boolean) {
+        if(!element) return;
         element.classList.toggle(className, force);
     }
 

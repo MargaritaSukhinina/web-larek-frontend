@@ -1,4 +1,4 @@
-import { IEvents } from "./events";
+import { IEvents } from "../base/events";
 
 export const isModel = (object: unknown): object is Model<any> => {
     return object instanceof Model;
